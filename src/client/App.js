@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import './app.css';
 import ReactImage from './react.png';
+import User from './components/User.js';
 
 export default class App extends Component {
-  state = { username: null };
+  state = { user: null };  
 
   componentDidMount() {
-    fetch('/api/getUsername')
+    fetch('/api/user')
       .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+      .then(user => this.setState({ user: user }));
   }
 
   render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
+    const user = this.state.user;
+    console.log(user);
+    return (      
+      <User user={this.state.user}></User>      
     );
   }
 }
