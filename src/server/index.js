@@ -9,12 +9,14 @@ app.use(express.static('dist'));
 // }));
 
 
-app.get('/api/user', (req, res) => res.send({
+app.get('/api/app', (req, res) => res.send({
     id: 12345,
     email: 'joe@gmail.com',
     name: 'Joe',
     xp: 5000,
+    maxXP: 25000,    
     level: 3,
+    progress: 45,
     categories: [{
             id: 'abc',
             name: 'Education',
