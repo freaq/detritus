@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { Link } from 'react-router-dom';
 
 export default class List extends Component {
-
-  categoryOnClick() {
-    alert('You clicked a Category!');
-  }
 
   render() {
     const user = this.props.app;
@@ -17,7 +14,9 @@ export default class List extends Component {
           <h2>Categories</h2>
           <ListGroup>
             {user.categories.map(category => (
-              <ListGroup.Item action onClick={this.categoryOnClick}>{category.name}</ListGroup.Item>
+              <Link to={'./list'}>
+                <ListGroup.Item action >{category.name}</ListGroup.Item>
+              </Link>
             ))
             }
           </ListGroup>
@@ -30,5 +29,9 @@ export default class List extends Component {
     return (
       content
     );
+  }
+
+  categoryOnClick() {
+    alert('You clicked a Category!');
   }
 }
