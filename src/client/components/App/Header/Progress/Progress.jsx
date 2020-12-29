@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './progress.css';
-import Badge from 'react-bootstrap/Badge';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import BSBadge from 'react-bootstrap/Badge';
+import BSProgressBar from 'react-bootstrap/ProgressBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MUIBadge from '@material-ui/core/Badge';
 
 export default class Progress extends Component {
 
@@ -15,10 +17,13 @@ export default class Progress extends Component {
 
       content =
         <div>
-          <h1>
-            <Badge variant="secondary">Level {app.level}</Badge>
+          <h1>            
+            <MUIBadge badgeContent={app.level} color="primary">
+              Level
+            </MUIBadge>
+            <FontAwesomeIcon icon="star" />
           </h1>
-          <ProgressBar style={{ height: '100px' }} now={progressValue} label={progressLabel} />
+          <BSProgressBar style={{ height: '100px' }} now={progressValue} label={progressLabel} />
         </div>;
     }
     else {
