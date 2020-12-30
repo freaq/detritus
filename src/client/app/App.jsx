@@ -11,14 +11,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 library.add(fas, far, fab);
 
-import Header from './Home/Header/Header.jsx';
-import Body from './Home/Body/Body.jsx';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-import Home from './Home/Home.jsx';
-import Home2 from './Home/Home2.jsx';
+import HomePage from '../pages/HomePage/HomePage.jsx';
+import CategoryPage from '../pages/CategoryPage/CategoryPage.jsx';
 
 export default class App extends Component {
   state = { user: null };
@@ -37,9 +31,9 @@ export default class App extends Component {
     return (
       <Switch>
         <div>
-          <Switch>
-            <Route exact path='/' component={() => <Home app={this.state.app} />} />
-            <Route path='/list' component={() => <Home2 app={this.state.app} />} />
+          <Switch>            
+            <Route exact path='/' component={() => <HomePage app={this.state.app} />} />
+            <Route path='/category' component={() => <CategoryPage app={this.state.app} />} />
           </Switch>
         </div>
       </Switch>

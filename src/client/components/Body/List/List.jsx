@@ -14,7 +14,7 @@ export default class List extends Component {
           <h2>Categories</h2>
           <ListGroup>
             {user.categories.map(category => (
-              <Link to={'./list'}>
+              <Link to={'./category'}>
                 <ListGroup.Item action >{category.name}</ListGroup.Item>
               </Link>
             ))
