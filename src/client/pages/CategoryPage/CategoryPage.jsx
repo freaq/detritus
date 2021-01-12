@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 // import './header.css';
 
-import MUIContainer from '@material-ui/core/Container';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import MuiContainer from '@material-ui/core/Container';
+import MuiGrid from '@material-ui/core/Grid';
 
 import AppBar from '../../components/AppBar/AppBar.jsx';
 import Header from '../../components/Header/Header.jsx';
@@ -15,12 +13,19 @@ export default class CategoryPage extends Component {
 
     render() {
         return (
-            <MUIContainer maxWidth="md">
-                <AppBar />
-
-                <Header app={this.props.app} />
-                <Body app={this.props.app} />
-            </MUIContainer>
+            <MuiContainer maxWidth="md">
+                <MuiGrid container spacing={3}>
+                    <MuiGrid item xs={12}>
+                        <AppBar />
+                    </MuiGrid>
+                    <MuiGrid item xs={12}>
+                        <Header app={this.props.app} />
+                    </MuiGrid>
+                    <MuiGrid item xs={12}>
+                        <Body app={this.props.app} />
+                    </MuiGrid>
+                </MuiGrid>
+            </MuiContainer>
         );
     }
 }

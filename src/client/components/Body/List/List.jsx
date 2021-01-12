@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
 
-export default class List extends Component {
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import MuiList from '@material-ui/core/List';
+import MuiListItem from '@material-ui/core/ListItem';
+import MuiListItemText from '@material-ui/core/ListItemText';
+
+class List extends Component {
 
   render() {
-    const user = this.props.app;
+
+    const StyledList = withStyles((theme) => ({
+      root: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper
+      },
+    }))(MuiList);
+
+    const categories = this.props.categories;
 
     let content;
-    if (user) {
+    if (categories) {
       content =
         <div>
           <h2>Categories</h2>
-          <ListGroup>
-            {user.categories.map(category => (
-              <Link to={'./category'}>
-                <ListGroup.Item action >{category.name}</ListGroup.Item>
+          <StyledList component="nav">
+            {categories.map(category => (
+              <Link key={category} to={'./category'}>
+                <MuiListItem button>
+                  <MuiListItemText primary={category.name} />
+                </MuiListItem>
               </Link>
             ))
             }
-          </ListGroup>
+          </StyledList>
         </div>;
     }
     else {
@@ -30,8 +46,20 @@ export default class List extends Component {
       content
     );
   }
-
-  categoryOnClick() {
-    alert('You clicked a Category!');
-  }
 }
+
+function mapStateToProps(state) {
+
+  const props = {
+    categories: []
+  };
+
+  if (state.app) {
+    props.categories = state.app.categories;
+  }
+
+  return props;
+}
+
+export default connect(mapStateToProps)(List);
+

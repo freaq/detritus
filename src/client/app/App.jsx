@@ -3,6 +3,10 @@ import './app.css';
 
 import { Route, Switch } from 'react-router-dom';
 
+import { connect } from "react-redux";
+
+import { setApp } from "../redux/actions.js";
+
 // Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -14,29 +18,47 @@ library.add(fas, far, fab);
 import HomePage from '../pages/HomePage/HomePage.jsx';
 import CategoryPage from '../pages/CategoryPage/CategoryPage.jsx';
 
-export default class App extends Component {
-  state = { user: null };
+class App extends Component {
+  state = {};
 
   componentDidMount() {
 
     // for now get all data in one go
     fetch('/api/app')
-      .then(res => res.json())
-      .then(app => this.setState({ app: app }));
+      .then(response => response.json())
+      .then(app => 
+        {
+          this.props.dispatch(setApp(app));
+        });
   }
 
   render() {
-    const app = this.state.app;
-    console.log(app);
-    return (
-      <Switch>
-        <div>
-          <Switch>            
-            <Route exact path='/' component={() => <HomePage app={this.state.app} />} />
-            <Route path='/category' component={() => <CategoryPage app={this.state.app} />} />
-          </Switch>
-        </div>
-      </Switch>
+        
+    console.log('Props:');
+    console.log(this.props);
+
+    const app = this.props.app;
+
+    return (      
+        <Switch>
+          <div>
+            <Switch>
+              <Route exact path='/' component={() => <HomePage app={app} />} />
+              <Route path='/category' component={() => <CategoryPage app={app} />} />
+            </Switch>
+          </div>
+        </Switch>
     );
   }
 }
+
+function mapStateToProps(state) {
+
+  return state;
+  // const app = state.app;
+  // return {
+  //   app: app
+  // };
+}
+
+export default connect(mapStateToProps)(App);
