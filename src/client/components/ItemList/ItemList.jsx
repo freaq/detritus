@@ -6,8 +6,9 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MuiList from '@material-ui/core/List';
 import MuiListItem from '@material-ui/core/ListItem';
 import MuiListItemText from '@material-ui/core/ListItemText';
+import { Category } from '@material-ui/icons';
 
-class List extends Component {
+export default class ItemList extends Component {
 
   render() {
 
@@ -19,18 +20,18 @@ class List extends Component {
       },
     }))(MuiList);
 
-    const categories = this.props.categories;
+    const listItems = this.props.listItems;
 
     let content;
-    if (categories) {
+    if (listItems) {
       content =
         <div>
-          <h2>Categories</h2>
+          <h2>{this.props.categoryName}</h2>
           <StyledList component="nav">
-            {categories.map(category => (
-              <Link key={category} to={'./category'}>
+            {listItems.map(listItem => (
+              <Link key={listItem} to={'./items/' + listItem.id}>
                 <MuiListItem button>
-                  <MuiListItemText primary={category.name} />
+                  <MuiListItemText primary={listItem.name} />
                 </MuiListItem>
               </Link>
             ))
@@ -47,19 +48,3 @@ class List extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-
-  const props = {
-    categories: []
-  };
-
-  if (state.app) {
-    props.categories = state.app.categories;
-  }
-
-  return props;
-}
-
-export default connect(mapStateToProps)(List);
-

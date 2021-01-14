@@ -3,7 +3,7 @@ import './body.css';
 
 import MuiGrid from '@material-ui/core/Grid';
 
-import List from './List/List.jsx';
+import List from '../List/List.jsx';
 
 export default class Body extends Component {
 

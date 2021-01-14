@@ -14,13 +14,13 @@ app.get('/api/app', (req, res) => res.send({
     email: 'joe@gmail.com',
     name: 'Joe',
     xp: 5000,
-    maxXP: 25000,    
+    maxXP: 25000,
     level: 3,
     progress: 45,
     categories: [{
             id: 'abc',
             name: 'Education',
-            description: '',
+            description: 'The more the better',
             categories: [],
             items: [{
                     id: 'itemEducationHighSchoolDiploma',
@@ -47,7 +47,7 @@ app.get('/api/app', (req, res) => res.send({
         {
             id: 'def',
             name: 'Insurance',
-            description: '',
+            description: 'Crucial to have basic coverage',
             categories: [],
             items: [{
                     id: 'itemInsuranceHealth',
@@ -58,6 +58,22 @@ app.get('/api/app', (req, res) => res.send({
                     id: 'itemInsuranceAuto',
                     name: 'Auto Insurance',
                     description: ""
+                }
+            ]
+        },
+        {
+            id: 'ghi',
+            name: 'Finance',
+            description: 'All about the money',
+            categories: [{
+                    id: 'categoryFinanceTaxes',
+                    name: 'Taxes',
+                    description: 'Taxes are great'
+                },
+                {
+                    id: 'categoryFinanceCheckingAccount',
+                    name: 'Checking Account',
+                    description: "Everyone has one"
                 }
             ]
         }

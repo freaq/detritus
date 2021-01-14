@@ -7,7 +7,6 @@ import MuiGrid from '@material-ui/core/Grid';
 import AppBar from '../../components/AppBar/AppBar.jsx';
 import Progress from '../../components/Progress/Progress.jsx';
 import CategoryList from '../../components/CategoryList/CategoryList.jsx';
-import ItemList from '../../components/ItemList/ItemList.jsx';
 
 class CategoryPage extends Component {
 
@@ -19,32 +18,6 @@ class CategoryPage extends Component {
         const category = categories.find(cat => {
             return cat.id === categoryId;
         });
-
-        const items = category.items;
-
-        let categoryList;
-        if (category.categories && category.categories.length) {
-
-            categoryList = <MuiGrid item xs={12}>
-                <MuiGrid container spacing={3}>
-                    <MuiGrid item xs={12}>
-                        <CategoryList categoryName={category.name} listItems={category.categories} />
-                    </MuiGrid>
-                </MuiGrid>
-            </MuiGrid>;
-        }
-         
-        let itemList;
-        if (category.items && category.items.length) {
-
-            itemList = <MuiGrid item xs={12}>
-                <MuiGrid container spacing={3}>
-                    <MuiGrid item xs={12}>
-                        <ItemList categoryName={category.name} listItems={category.items} />
-                    </MuiGrid>
-                </MuiGrid>
-            </MuiGrid>;
-        }
 
         return (
             <MuiContainer maxWidth="md">
@@ -59,8 +32,13 @@ class CategoryPage extends Component {
                             </MuiGrid>
                         </MuiGrid>
                     </MuiGrid>
-                    {categoryList}
-                    {itemList}
+                    <MuiGrid item xs={12}>
+                        <MuiGrid container spacing={3}>
+                            <MuiGrid item xs={12}>
+                                <CategoryList categoryName={category.name} listItems={category.categories} />
+                            </MuiGrid>
+                        </MuiGrid>
+                    </MuiGrid>
                 </MuiGrid>
             </MuiContainer>
         );

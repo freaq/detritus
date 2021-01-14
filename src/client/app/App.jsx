@@ -17,6 +17,7 @@ library.add(fas, far, fab);
 
 import HomePage from '../pages/HomePage/HomePage.jsx';
 import CategoryPage from '../pages/CategoryPage/CategoryPage.jsx';
+import CategoriesPage from '../pages/CategoriesPage/CategoriesPage.jsx';
 
 class App extends Component {
   state = {};
@@ -26,28 +27,29 @@ class App extends Component {
     // for now get all data in one go
     fetch('/api/app')
       .then(response => response.json())
-      .then(app => 
-        {
-          this.props.dispatch(setApp(app));
-        });
+      .then(app => {
+        this.props.dispatch(setApp(app));
+      });
   }
 
   render() {
-        
+
     console.log('Props:');
     console.log(this.props);
 
     const app = this.props.app;
 
-    return (      
-        <Switch>
-          <div>
-            <Switch>
-              <Route exact path='/' component={() => <HomePage app={app} />} />
-              <Route path='/category' component={() => <CategoryPage app={app} />} />
-            </Switch>
-          </div>
-        </Switch>
+    return (
+      <Switch>
+        <div>
+          <Switch>
+            <Route exact path='/' component={() => <CategoriesPage app={app} />} />
+            <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
+            <Route exact path='/categories/:categoryId' component={() => <CategoryPage app={app} />} />
+            {/* <Route path='/items' component={() => <CategoryPage app={app} />} /> */}
+          </Switch>
+        </div>
+      </Switch>
     );
   }
 }

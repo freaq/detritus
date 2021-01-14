@@ -3,7 +3,7 @@ import './header.css';
 
 import MuiGrid from '@material-ui/core/Grid';
 
-import Progress from './Progress/Progress.jsx';
+import Progress from '../Progress/Progress.jsx';
 
 export default class Header extends Component {
 
