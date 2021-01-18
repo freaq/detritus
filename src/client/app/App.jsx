@@ -15,9 +15,14 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 library.add(fas, far, fab);
 
-import HomePage from '../pages/HomePage/HomePage.jsx';
+import MuiContainer from '@material-ui/core/Container';
+import MuiGrid from '@material-ui/core/Grid';
+
+import AppBar from '../components/AppBar/AppBar.jsx';
+
 import CategoryPage from '../pages/CategoryPage/CategoryPage.jsx';
 import CategoriesPage from '../pages/CategoriesPage/CategoriesPage.jsx';
+import ItemPage from '../pages/ItemPage/ItemPage.jsx';
 
 class App extends Component {
   state = {};
@@ -40,16 +45,21 @@ class App extends Component {
     const app = this.props.app;
 
     return (
-      <Switch>
-        <div>
-          <Switch>
-            <Route exact path='/' component={() => <CategoriesPage app={app} />} />
-            <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
-            <Route exact path='/categories/:categoryId' component={() => <CategoryPage app={app} />} />
-            {/* <Route path='/items' component={() => <CategoryPage app={app} />} /> */}
-          </Switch>
-        </div>
-      </Switch>
+      <MuiContainer maxWidth="md">
+        <MuiGrid container spacing={3}>
+          <MuiGrid item xs={12}>
+            <AppBar />
+          </MuiGrid>
+          <MuiGrid item xs={12}>
+            <Switch>
+              <Route exact path='/' component={() => <CategoriesPage app={app} />} />
+              <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
+              <Route exact path='/categories/:categoryId' component={() => <CategoryPage app={app} />} />
+              <Route exact path='/items/:itemId' component={() => <ItemPage />} />
+            </Switch>
+          </MuiGrid>
+        </MuiGrid>
+      </MuiContainer>
     );
   }
 }

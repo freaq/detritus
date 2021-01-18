@@ -3,6 +3,8 @@ import { VISIBILITY_FILTERS } from "../constants";
 
 export const getApp = store => store.app;
 
+// export const getItem = store => store.item;
+
 export const getTodosState = store => store.todos;
 
 export const getTodoList = store =>

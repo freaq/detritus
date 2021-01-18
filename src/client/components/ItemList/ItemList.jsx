@@ -29,7 +29,7 @@ export default class ItemList extends Component {
           <h2>{this.props.categoryName}</h2>
           <StyledList component="nav">
             {listItems.map(listItem => (
-              <Link key={listItem} to={'./items/' + listItem.id}>
+              <Link key={listItem.id} to={'/items/' + listItem.id}>
                 <MuiListItem button>
                   <MuiListItemText primary={listItem.name} />
                 </MuiListItem>
