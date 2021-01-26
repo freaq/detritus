@@ -21,7 +21,7 @@ export default class CategoryList extends Component {
     }))(MuiList);
 
     const listItems = this.props.listItems;
-
+    
     let content;
     if (listItems) {
       content =

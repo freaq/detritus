@@ -11,11 +11,16 @@ export default class CategoriesPage extends Component {
 
     render() {
 
-        const categories = this.props.app.categories;
+        let categories = [];
+        if (this.props.app.categories) {
+            categories = this.props.app.categories.filter((category) => {
+                return category.isRootLevelCategory === true;
+            });
+        }
 
         return (
             <MuiContainer maxWidth="md">
-                <MuiGrid container spacing={3}>                    
+                <MuiGrid container spacing={3}>
                     <MuiGrid item xs={12}>
                         <MuiGrid container spacing={3}>
                             <MuiGrid item xs={12}>

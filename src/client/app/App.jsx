@@ -39,7 +39,7 @@ class App extends Component {
 
   render() {
 
-    console.log('Props:');
+    console.log('App props:');
     console.log(this.props);
 
     const app = this.props.app;
@@ -54,8 +54,8 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={() => <CategoriesPage app={app} />} />
               <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
-              <Route exact path='/categories/:categoryId' component={() => <CategoryPage app={app} />} />
-              <Route exact path='/items/:itemId' component={() => <ItemPage />} />
+              <Route exact path='/categories/:categoryId' component={() => <CategoryPage />} />
+              <Route exact path='/items/:itemId' component={() => <ItemPage />} />              
             </Switch>
           </MuiGrid>
         </MuiGrid>

@@ -26,26 +26,27 @@ class ItemPage extends Component {
                 .then(item => {
                     this.props.dispatch(setItem(item));
                 });
-        }        
+        }
     }
 
-    buttonOnClick()
-    {
-        alert('hi');
+    buttonOnClick(event) {
 
+        const item = this.props.item;
+        item.completed = !item.completed;
+        this.props.dispatch(setItem(item));
     }
 
     render() {
 
         const item = this.props.item;
-
+        
         let content;
         if (item) {
             content =
                 <div>
                     <h2>{item.name}</h2>
                     <h3>{item.description}</h3>
-                    <MuiButton variant="contained" onClick={this.buttonOnClick}>I have this</MuiButton>                    
+                    <MuiButton variant="contained" onClick={(event) => { this.buttonOnClick(event) }}>{this.props.item && this.props.item.completed ? 'Completed' : 'Not Completed'}</MuiButton>
                 </div>;
         }
         else {

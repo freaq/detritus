@@ -13,7 +13,7 @@ server.use(express.static('dist'));
 //     username: os.userInfo().username
 // }));
 
-const appData = {
+const app = {
     id: 99999,
     email: 'joe@gmail.com',
     name: 'Joe',
@@ -21,86 +21,46 @@ const appData = {
     maxXP: 25000,
     level: 3,
     progress: 45,
-    categories: [{
-            id: 101,
-            name: 'Education',
-            description: 'The more the better',
-            categories: [],
-            items: [{
-                    id: 1001,
-                    name: 'High School Diploma',
-                    description: "It's great to have a diploma"
-                },
-                {
-                    id: 1002,
-                    name: 'Associates Degree',
-                    description: "I went to college!"
-                },
-                {
-                    id: 1003,
-                    name: 'Bachelors Degree',
-                    description: "I'm smart"
-                },
-                {
-                    id: 1004,
-                    name: 'Masters Degree',
-                    description: ""
-                }
-            ]
-        },
-        {
-            id: 102,
-            name: 'Insurance',
-            description: 'Crucial to have basic coverage',
-            categories: [],
-            items: [{
-                    id: 1021,
-                    name: 'Health Insurance',
-                    description: ""
-                },
-                {
-                    id: 1022,
-                    name: 'Auto Insurance',
-                    description: ""
-                }
-            ]
-        },
-        {
-            id: 103,
-            name: 'Finance',
-            description: 'All about the money',
-            categories: [{
-                    id: 1031,
-                    name: 'Taxes',
-                    description: 'Taxes are great'
-                },
-                {
-                    id: 1032,
-                    name: 'Checking Account',
-                    description: "Everyone has one"
-                }
-            ]
-        }
-    ]
+    categories: []
 };
 
-const categories = {
-    101: {
+const categories = [{
         id: 101,
         name: 'Education',
         description: 'The more the better',
-        categories: []
+        isRootLevelCategory: true,
+        categories: [],
+        items: [{
+                id: 1001
+            },
+            {
+                id: 1002
+            },
+            {
+                id: 1003
+            },
+            {
+                id: 1004
+            }
+        ]
     },
-    102: {
+    {
         id: 102,
         name: 'Insurance',
         description: 'Crucial to have basic coverage',
-        categories: []
+        isRootLevelCategory: true,
+        categories: [],
+        items: [{
+            id: 1021
+        }, {
+            id: 1022
+        }]
     },
-    103: {
+    {
         id: 103,
         name: 'Finance',
         description: 'All about the money',
+        isRootLevelCategory: true,
         categories: [{
                 id: 1031
             },
@@ -109,71 +69,113 @@ const categories = {
             }
         ]
     },
-    1031: {
+    {
         id: 1031,
         name: 'Taxes',
         description: 'Taxes are great'
     },
-    1032: {
+    {
         id: 1032,
         name: 'Checking Account',
         description: "Everyone has one"
     }
-};
-const items = {
-    1001: {
+];
+
+const items = [{
         id: 1001,
         name: 'High School Diploma',
         description: "It's great to have a diploma"
     },
-    1002: {
+    {
         id: 1002,
         name: 'Associates Degree',
         description: "I went to college!"
     },
-    1003: {
+    {
         id: 1003,
         name: 'Bachelors Degree',
         description: "I'm smart"
     },
-    1004: {
+    {
         id: 1004,
         name: 'Masters Degree',
         description: ""
     },
-    1021: {
+    {
         id: 1021,
         name: 'Health Insurance',
         description: ""
     },
-    1022: {
+    {
         id: 1022,
         name: 'Auto Insurance',
         description: ""
     },
-    1031: {
+    {
         id: 1031,
         name: 'Taxes',
         description: 'Taxes are great'
     },
-    1032: {
+    {
         id: 1032,
         name: 'Checking Account',
         description: "Everyone has one"
     }
-};
+];
 
 server.get('/api/app', (request, response) => {
-    response.send(appData);
+
+    const payload = app;
+    payload.categories = categories;
+
+    response.send(payload);
+});
+
+server.get('/api/categories/:id', (request, response) => {
+
+    if (!request.params.id) {
+        console.error("Category 'Id' parameter not found.");
+    }
+
+    const category = categories.find((category) => {
+        return category.id === Number(request.params.id);
+    });
+    if (category) {
+
+        // hydrate the sub-categories with their full data
+        category.categories = category.categories || [];
+        category.categories = category.categories.map((category) =>
+        {
+            return categories.find((cat) =>
+            {
+                return cat.id === category.id;
+            });
+        });
+
+        // hydrate the items with their full data
+        category.items = category.items || [];
+        category.items = category.items.map((item) =>
+        {
+            return items.find((itm) =>
+            {
+                return itm.id === item.id;
+            });
+        });
+        response.send(category);
+    } else {
+        console.error("Category with id '" + request.params.id + "' not found.");
+    }
 });
 
 server.get('/api/items/:id', (request, response) => {
 
     if (!request.params.id) {
-        console.error("Id parameter not found.");
+        console.error("Item 'Id' parameter not found.");
     }
 
-    const item = items[request.params.id];
+    const item = items.find((item) => {
+        return item.id === Number(request.params.id);
+    });
     if (item) {
         response.send(item);
     } else {

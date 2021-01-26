@@ -1,4 +1,4 @@
-import { SET_APP, SET_ITEM, ADD_TODO, TOGGLE_TODO, SET_FILTER } from "./actionTypes";
+import { SET_APP, SET_ITEM, SET_CATEGORY, ADD_TODO, TOGGLE_TODO, SET_FILTER } from "./actionTypes";
 
 let nextTodoId = 0;
 
@@ -23,6 +23,11 @@ export const setApp = app => ({
 export const setItem = item => ({
   type: SET_ITEM,
   payload: { item }
+});
+
+export const setCategory = category => ({
+  type: SET_CATEGORY,
+  payload: { category }
 });
 
 export const setFilter = filter => ({ type: SET_FILTER, payload: { filter } });

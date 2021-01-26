@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 
+import { connect } from "react-redux";
+
+import { setCategory } from "../../redux/actions.js";
+
 import MuiContainer from '@material-ui/core/Container';
 import MuiGrid from '@material-ui/core/Grid';
 
@@ -10,15 +14,25 @@ import ItemList from '../../components/ItemList/ItemList.jsx';
 
 class CategoryPage extends Component {
 
+    componentDidMount() {
+
+        const categoryId = Number(this.props.match.params.categoryId);
+
+        // prevent the API from being called multiple times
+        if (this.props.category.id !== categoryId) {
+
+            fetch('/api/categories/' + categoryId)
+                .then(response => response.json())
+                .then(category => {
+                    this.props.dispatch(setCategory(category));                    
+                });
+        }        
+    }
+
     render() {
 
-        const categoryId = this.props.match.params.categoryId;
-        const categories = this.props.app.categories;
-
-        const category = categories.find(cat => {
-            return cat.id === Number(categoryId);
-        });
-
+        const category = this.props.category;        
+        
         let categoryList;
         let itemList;
 
@@ -66,4 +80,9 @@ class CategoryPage extends Component {
     }
 }
 
-export default withRouter(CategoryPage);
+
+function mapStateToProps(state) {
+    return state;
+}
+
+export default withRouter(connect(mapStateToProps)(CategoryPage));

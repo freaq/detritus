@@ -1,15 +1,16 @@
 import {
-  SET_ITEM
+  SET_CATEGORY
 } from "../actionTypes";
 
-const initialState = {};
+const initialState = {}
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_ITEM: {
+    case SET_CATEGORY: {
       return {
-        ...action.payload.item
-      }
+        ...state,
+        ...action.payload.category
+      };
     }
     default:
       return state;
