@@ -7,6 +7,7 @@ import { setCategory } from "../../redux/actions.js";
 
 import MuiContainer from '@material-ui/core/Container';
 import MuiGrid from '@material-ui/core/Grid';
+import MuiPaper from '@material-ui/core/Paper';
 
 import Progress from '../../components/Progress/Progress.jsx';
 import CategoryList from '../../components/CategoryList/CategoryList.jsx';
@@ -24,15 +25,15 @@ class CategoryPage extends Component {
             fetch('/api/categories/' + categoryId)
                 .then(response => response.json())
                 .then(category => {
-                    this.props.dispatch(setCategory(category));                    
+                    this.props.dispatch(setCategory(category));
                 });
-        }        
+        }
     }
 
     render() {
 
-        const category = this.props.category;        
-        
+        const category = this.props.category;
+
         let categoryList;
         let itemList;
 
@@ -42,35 +43,29 @@ class CategoryPage extends Component {
             if (category.categories && category.categories.length) {
 
                 categoryList = <MuiGrid item xs={12}>
-                    <MuiGrid container spacing={3}>
-                        <MuiGrid item xs={12}>
-                            <CategoryList categoryName={category.name} listItems={category.categories} />
-                        </MuiGrid>
-                    </MuiGrid>
+                    <MuiPaper elevation={3} style={{ padding: '25px' }}>
+                        <CategoryList categoryName={category.name} listItems={category.categories} />
+                    </MuiPaper>
                 </MuiGrid>;
             }
 
             if (category.items && category.items.length) {
 
                 itemList = <MuiGrid item xs={12}>
-                    <MuiGrid container spacing={3}>
-                        <MuiGrid item xs={12}>
-                            <ItemList categoryName={category.name} listItems={category.items} />
-                        </MuiGrid>
-                    </MuiGrid>
+                    <MuiPaper elevation={3} style={{ padding: '25px' }}>
+                        <ItemList categoryName={category.name} listItems={category.items} />
+                    </MuiPaper>
                 </MuiGrid>;
             }
         }
 
         return (
             <MuiContainer maxWidth="md">
-                <MuiGrid container spacing={3}>                    
+                <MuiGrid container spacing={3}>
                     <MuiGrid item xs={12}>
-                        <MuiGrid container spacing={3}>
-                            <MuiGrid item xs={12}>
-                                <Progress app={this.props.app} />
-                            </MuiGrid>
-                        </MuiGrid>
+                        <MuiPaper elevation={3} style={{ padding: '25px' }}>
+                            <Progress app={this.props.app} />
+                        </MuiPaper>
                     </MuiGrid>
                     {categoryList}
                     {itemList}
