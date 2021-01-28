@@ -17,13 +17,13 @@ server.use(express.static('dist'));
 // }));
 
 const config = {
-    endpoint: 'https://detritus.documents.azure.com:443/',
-    key: '4QuCEWKCB8vMsc94OZu0xKH7aRD7c8DEoysZhrJXC9KThR3nXleqQTcxNGXjI75fF4ddc7ObqJ4ADuDNK3TMjA=='
+    endpoint: '',
+    key: ''
 };
 
 const databaseId = 'detritus';
 
-const dbClient = new CosmosClient('AccountEndpoint=https://detritus.documents.azure.com:443/;AccountKey=4QuCEWKCB8vMsc94OZu0xKH7aRD7c8DEoysZhrJXC9KThR3nXleqQTcxNGXjI75fF4ddc7ObqJ4ADuDNK3TMjA==;');
+const dbClient = new CosmosClient('AccountEndpoint=');
 
 
 
