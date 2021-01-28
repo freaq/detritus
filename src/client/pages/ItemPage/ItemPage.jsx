@@ -18,7 +18,7 @@ class ItemPage extends Component {
 
     componentDidMount() {
 
-        const itemId = Number(this.props.match.params.itemId);
+        const itemId = this.props.match.params.itemId;
 
         // prevent the API from being called multiple times
         if (this.props.item.id !== itemId) {

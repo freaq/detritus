@@ -17,7 +17,7 @@ class CategoryPage extends Component {
 
     componentDidMount() {
 
-        const categoryId = Number(this.props.match.params.categoryId);
+        const categoryId = this.props.match.params.categoryId;
 
         // prevent the API from being called multiple times
         if (this.props.category.id !== categoryId) {
