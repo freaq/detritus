@@ -19,7 +19,7 @@ export default function CategoriesPage({ app }) {
     return (
         <MuiContainer maxWidth="md">
             <MuiGrid container spacing={3}>
-                <MuiGrid item xs={12}>
+                <MuiGrid item xs={12}>                    
                     <MuiPaper elevation={3} style={{ padding: '25px' }}>
                         <Progress app={app} />
                     </MuiPaper>

@@ -30,4 +30,14 @@ module.exports = class DetritusDB {
         return results;
     };    
 
+    async getUser(auth0UserId) {
+        const querySpec = {
+            query: "SELECT * FROM users u WHERE u.auth0UserId = '" + auth0UserId + "' "
+        };
+    
+        const results = await database.fetchAll('users', querySpec);
+        return results;
+    };
+
+
 }

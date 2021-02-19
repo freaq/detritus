@@ -125,4 +125,6 @@ server.get('/api/categories/:id', api.getCategory);
 
 server.get('/api/items/:id', api.getItem);
 
+server.get('/api/users/:id', api.getUser);
+
 server.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));

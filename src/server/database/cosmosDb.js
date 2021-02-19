@@ -15,10 +15,43 @@ module.exports = class CosmosDB {
         } = await dbClient
             .database(databaseId)
             .container(container)
-            .items.query(querySpec)
+            .items
+            .query(querySpec)
             .fetchAll();
 
         return results;
+    }
+
+    async createItem(container, newItem) {
+        const {
+            resource: createdItem
+        } = await dbClient
+            .database(databaseId)
+            .container(container)
+            .items
+            .create(newItem);
+
+        return createdItem;
+    }
+
+    async updateItem(container, item) {
+        const {
+            resource: updatedItem
+        } = await container
+            .item(item.id)
+            .replace(item);
+
+        return updatedItem;
+    }
+
+    async deleteItem(container, item) {
+        const {
+            resource: result
+        } = await container
+            .item(item.id)
+            .delete();
+
+        return result;
     }
 
 }

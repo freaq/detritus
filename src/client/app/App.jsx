@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import './app.css';
 
 import { Route, Switch } from 'react-router-dom';
 
 import { connect } from "react-redux";
 
-import { setApp } from "../redux/actions.js";
+import { setApp, setUser } from "../redux/actions.js";
+
+import { useAuth0 } from "@auth0/auth0-react";
 
 // Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -24,53 +26,49 @@ import CategoryPage from '../pages/CategoryPage/CategoryPage.jsx';
 import CategoriesPage from '../pages/CategoriesPage/CategoriesPage.jsx';
 import ItemPage from '../pages/ItemPage/ItemPage.jsx';
 
-class App extends Component {
-  state = {};
+const App = (props) => {
 
-  componentDidMount() {
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
-    // for now get all data in one go
-    fetch('/api/app')
-      .then(response => response.json())
-      .then(app => {
-        this.props.dispatch(setApp(app));
-      });
-  }
+  useEffect(() => {
 
-  render() {
+    if (!props.user.id && !isLoading && user && isAuthenticated) {
 
-    console.log('App props:');
-    console.log(this.props);
+      // for now get all data in one go
+      fetch('/api/users/' + user.sub)
+        .then(response => response.json())
+        .then(user => {
+          props.dispatch(setUser(user));
+        });
+    }
+  });
 
-    const app = this.props.app;
+  console.log(props);
 
-    return (
-      <MuiContainer maxWidth="md">
-        <MuiGrid container spacing={3}>
-          <MuiGrid item xs={12}>
-            <AppBar />
-          </MuiGrid>
-          <MuiGrid item xs={12}>
-            <Switch>
-              <Route exact path='/' component={() => <CategoriesPage app={app} />} />
-              <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
-              <Route exact path='/categories/:categoryId' component={() => <CategoryPage />} />
-              <Route exact path='/items/:itemId' component={() => <ItemPage />} />              
-            </Switch>
-          </MuiGrid>
+  // clean this up and replace app with user in sub-components
+  const app = props.user;
+
+  return (
+    <MuiContainer maxWidth="md">
+      <MuiGrid container spacing={3}>
+        <MuiGrid item xs={12}>
+          <AppBar />
         </MuiGrid>
-      </MuiContainer>
-    );
-  }
+        <MuiGrid item xs={12}>
+          <Switch>
+            <Route exact path='/' component={() => <CategoriesPage app={app} />} />
+            <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
+            <Route exact path='/categories/:categoryId' component={() => <CategoryPage />} />
+            <Route exact path='/items/:itemId' component={() => <ItemPage />} />
+          </Switch>
+        </MuiGrid>
+      </MuiGrid>
+    </MuiContainer>
+  );
 }
 
 function mapStateToProps(state) {
-
   return state;
-  // const app = state.app;
-  // return {
-  //   app: app
-  // };
 }
 
 export default connect(mapStateToProps)(App);

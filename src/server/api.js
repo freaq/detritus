@@ -24,10 +24,32 @@ module.exports = class API {
         });
     };
 
+    getUser = (request, response) => {
+        if (!request.params.id) {
+            console.error("User 'auth0UserId' parameter not found.");
+        }
+
+        database.getUser(request.params.id).then((users) => {
+
+            if (!users) {
+                console.error('getUser returned an empty result');
+            }
+
+            const user = users[0];
+
+            console.log(user);
+
+            database.getCategories().then((categories) => {
+                user.categories = categories;
+                response.send(user);
+            });
+        });
+    };
+
     getCategory = (request, response) => {
 
         if (!request.params.id) {
-            console.error("Category 'Id' parameter not found.");
+            console.error("Category 'id' parameter not found.");
         }
 
         database.getCategory(request.params.id).then((result) => {
@@ -35,8 +57,6 @@ module.exports = class API {
             if (!result) {
                 console.error('getCategory returned an empty result');
             }
-
-            console.log(result);
 
             const category = result.find((category) => {
                 return category.id === request.params.id;
@@ -86,7 +106,7 @@ module.exports = class API {
     getItem = (request, response) => {
 
         if (!request.params.id) {
-            console.error("Item 'Id' parameter not found.");
+            console.error("Item 'id' parameter not found.");
         }
 
         const item = items.find((item) => {
