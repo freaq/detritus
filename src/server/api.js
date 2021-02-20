@@ -7,20 +7,14 @@ module.exports = class API {
 
     getApp = (request, response) => {
 
-        const payload = {
-            id: 99999,
-            email: 'joe@gmail.com',
-            name: 'Joe',
-            xp: 5000,
-            maxXP: 25000,
-            level: 3,
-            progress: 45,
+        const app = {
+            id: 'detritus',
             categories: []
         };
 
         database.getCategories().then((result) => {
-            payload.categories = result;
-            response.send(payload);
+            app.categories = result;
+            response.send(app);
         });
     };
 
@@ -78,13 +72,11 @@ module.exports = class API {
                         // hydrate the items with their full data
                         category.items = category.items || [];
                         category.items = category.items.map((item) => {
-                            return items.find((itm) => {
+                            return items.find((itm) => {                                
                                 return itm.id === item.id;
                             });
                         });
                         response.send(category);
-
-
                     });
                 } else {
                     // hydrate the items with their full data

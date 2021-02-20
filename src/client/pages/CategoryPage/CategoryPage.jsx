@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+
 import { withRouter } from "react-router";
 
 import { connect } from "react-redux";
@@ -13,66 +14,64 @@ import Progress from '../../components/Progress/Progress.jsx';
 import CategoryList from '../../components/CategoryList/CategoryList.jsx';
 import ItemList from '../../components/ItemList/ItemList.jsx';
 
-class CategoryPage extends Component {
+const CategoryPage = (props) => {
 
-    componentDidMount() {
+    useEffect(() => {
 
-        const categoryId = this.props.match.params.categoryId;
+        const categoryId = props.match.params.categoryId;
 
         // prevent the API from being called multiple times
-        if (this.props.category.id !== categoryId) {
+        if (props.category.id !== categoryId) {
 
             fetch('/api/categories/' + categoryId)
                 .then(response => response.json())
                 .then(category => {
-                    this.props.dispatch(setCategory(category));
+                    props.dispatch(setCategory(category));
                 });
+        }
+    });
+
+
+    const category = props.category;
+
+    let categoryList;
+    let itemList;
+
+    if (category) {
+        const items = category.items;
+
+        if (category.categories && category.categories.length) {
+
+            categoryList = <MuiGrid item xs={12}>
+                <MuiPaper elevation={3} style={{ padding: '25px' }}>
+                    <CategoryList categoryName={category.name} listItems={category.categories} />
+                </MuiPaper>
+            </MuiGrid>;
+        }
+
+        if (category.items && category.items.length) {
+
+            itemList = <MuiGrid item xs={12}>
+                <MuiPaper elevation={3} style={{ padding: '25px' }}>
+                    <ItemList categoryName={category.name} listItems={category.items} />
+                </MuiPaper>
+            </MuiGrid>;
         }
     }
 
-    render() {
-
-        const category = this.props.category;
-
-        let categoryList;
-        let itemList;
-
-        if (category) {
-            const items = category.items;
-
-            if (category.categories && category.categories.length) {
-
-                categoryList = <MuiGrid item xs={12}>
-                    <MuiPaper elevation={3} style={{ padding: '25px' }}>
-                        <CategoryList categoryName={category.name} listItems={category.categories} />
-                    </MuiPaper>
-                </MuiGrid>;
-            }
-
-            if (category.items && category.items.length) {
-
-                itemList = <MuiGrid item xs={12}>
-                    <MuiPaper elevation={3} style={{ padding: '25px' }}>
-                        <ItemList categoryName={category.name} listItems={category.items} />
-                    </MuiPaper>
-                </MuiGrid>;
-            }
-        }
-
-        return (
-            <MuiContainer maxWidth="md">
-                <MuiGrid container spacing={3}>
-                    <MuiGrid item xs={12}>
+    return (
+        <MuiContainer maxWidth="md">
+            <MuiGrid container spacing={3}>
+                {/* <MuiGrid item xs={12}>
                         <MuiPaper elevation={3} style={{ padding: '25px' }}>
                             <Progress app={this.props.app} />
                         </MuiPaper>
-                    </MuiGrid>
-                    {categoryList}
-                    {itemList}
-                </MuiGrid>
-            </MuiContainer>
-        );
-    }
+                    </MuiGrid> */}
+                {categoryList}
+                {itemList}
+            </MuiGrid>
+        </MuiContainer>
+    );
 }
 
 
@@ -81,3 +80,4 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(connect(mapStateToProps)(CategoryPage));
+

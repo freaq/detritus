@@ -32,21 +32,49 @@ const App = (props) => {
 
   useEffect(() => {
 
-    if (!props.user.id && !isLoading && user && isAuthenticated) {
+    // IF auth0 is done
+    if (!isLoading) {
+      // IF the user is logged in
+      // THEN load the user data
+      // ELSE load the generic app data
+      if (isAuthenticated) {
+        // IF auth0 returned a user
+        // AND the user info has not been previously fetched or belongs to a different user
+        // THEN load the user data
+        if (user && props.user.auth0UserId !== user.sub) {
 
-      // for now get all data in one go
-      fetch('/api/users/' + user.sub)
-        .then(response => response.json())
-        .then(user => {
-          props.dispatch(setUser(user));
-        });
+          fetch('/api/users/' + user.sub)
+            .then(response => response.json())
+            .then(user => {
+              props.dispatch(setUser(user));
+            });
+        }
+      }
+      else {
+        // IF the app data has not been previously fetched
+        // THEN load the app data
+        if (!props.app.id) {
+
+          fetch('/api/app')
+            .then(response => response.json())
+            .then(app => {
+              props.dispatch(setApp(app));
+            });
+        }
+      }
     }
   });
 
+  console.log("Props:");
   console.log(props);
 
-  // clean this up and replace app with user in sub-components
-  const app = props.user;
+  let categories = [];
+  if (props.user.id) {
+    categories = props.user.categories;
+  }
+  else if (props.app.id) {
+    categories = props.app.categories;
+  }
 
   return (
     <MuiContainer maxWidth="md">
@@ -56,8 +84,8 @@ const App = (props) => {
         </MuiGrid>
         <MuiGrid item xs={12}>
           <Switch>
-            <Route exact path='/' component={() => <CategoriesPage app={app} />} />
-            <Route exact path='/categories' component={() => <CategoriesPage app={app} />} />
+            <Route exact path='/' component={() => <CategoriesPage categories={categories} />} />
+            <Route exact path='/categories' component={() => <CategoriesPage categories={categories} />} />
             <Route exact path='/categories/:categoryId' component={() => <CategoryPage />} />
             <Route exact path='/items/:itemId' component={() => <ItemPage />} />
           </Switch>
