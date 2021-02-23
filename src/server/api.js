@@ -31,6 +31,7 @@ module.exports = class API {
 
             const user = users[0];
 
+            console.log('User:');
             console.log(user);
 
             database.getCategories().then((categories) => {
@@ -72,7 +73,7 @@ module.exports = class API {
                         // hydrate the items with their full data
                         category.items = category.items || [];
                         category.items = category.items.map((item) => {
-                            return items.find((itm) => {                                
+                            return items.find((itm) => {
                                 return itm.id === item.id;
                             });
                         });
@@ -101,13 +102,38 @@ module.exports = class API {
             console.error("Item 'id' parameter not found.");
         }
 
-        const item = items.find((item) => {
-            return item.id === request.params.id;
-        });
-        if (item) {
-            response.send(item);
+        if (!items) {
+            database.getItems().then((result) => {
+                items = result;
+
+
+                const item = items.find((item) => {
+                    return item.id === request.params.id;
+                });
+                if (item) {
+                    response.send(item);
+                } else {
+                    console.error("Item with id '" + request.params.id + "' not found.");
+                }
+            });
         } else {
-            console.error("Item with id '" + request.params.id + "' not found.");
+            const item = items.find((item) => {
+                return item.id === request.params.id;
+            });
+            if (item) {
+                response.send(item);
+            } else {
+                console.error("Item with id '" + request.params.id + "' not found.");
+            }
         }
+    };
+
+    createOrUpdateUserItem = (request, response) => {
+
+        const item = request.body;
+
+        database.createOrUpdateUserItem(item).then(results => {
+            response.send(results);
+        });
     };
 }

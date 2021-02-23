@@ -9,9 +9,9 @@ const databaseId = process.env.COSMOS_DATABASE_ID;
 
 module.exports = class CosmosDB {
 
-    async fetchAll(container, querySpec) {
+    async getItems(container, querySpec) {
         const {
-            resources: results
+            resources: items
         } = await dbClient
             .database(databaseId)
             .container(container)
@@ -19,8 +19,8 @@ module.exports = class CosmosDB {
             .query(querySpec)
             .fetchAll();
 
-        return results;
-    }
+        return items;
+    };
 
     async createItem(container, newItem) {
         const {
@@ -32,26 +32,58 @@ module.exports = class CosmosDB {
             .create(newItem);
 
         return createdItem;
-    }
+    };
 
-    async updateItem(container, item) {
+    async replaceItem(container, item) {
         const {
-            resource: updatedItem
-        } = await container
+            resource: replacedItem
+        } = await dbClient
+            .database(databaseId)
+            .container(container)
             .item(item.id)
             .replace(item);
 
-        return updatedItem;
-    }
+        return replacedItem;
+    };
 
-    async deleteItem(container, item) {
+    async upsertItem(container, item) {
         const {
-            resource: result
-        } = await container
-            .item(item.id)
-            .delete();
+            resource: upsertedItem
+        } = await dbClient
+            .database(databaseId)
+            .container(container)
+            .items
+            .upsert(item);
 
-        return result;
-    }
+        return upsertedItem;
+    };
+
+    // async deleteItem(container, item) {
+    //     const {
+    //         resource: deletedItem
+    //     } = await container
+    //         .item(item.id)
+    //         .delete();
+
+    //     return deletedItem;
+    // }
+
+    // async createOrUpdateItem(container, item) {
+
+    //     let createdOrUpdatedItem;
+
+    //     const querySpec = {
+    //         query: "SELECT * FROM " + container + " c WHERE c.id = '" + item.id + "' "
+    //     };
+
+    //     const items = await this.getItems(container, querySpec);
+    //     if (items && items[0]) {
+    //         createdOrUpdatedItem = await this.replaceItem(container, item);                         
+    //     } else {
+    //         createdOrUpdatedItem = await this.createItem(container, item);            
+    //     }
+
+    //     return createdOrUpdatedItem;
+    // };
 
 }

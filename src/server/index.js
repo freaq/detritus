@@ -1,6 +1,5 @@
 const express = require('express');
 const os = require('os');
-const bodyParser = require("body-parser");
 const {
     exception
 } = require('console');
@@ -8,7 +7,8 @@ const {
 
 
 const server = express();
-server.use(bodyParser.json());
+server.use(express.json());
+server.use(express.urlencoded({extended: true}));
 
 server.use(express.static('dist'));
 
@@ -16,6 +16,17 @@ const API = require('./api.js');
 const api = new API();
 
 
+server.get('/api/app', api.getApp);
+
+server.get('/api/categories/:id', api.getCategory);
+
+server.get('/api/items/:id', api.getItem);
+
+server.post('/api/items/:id', api.createOrUpdateUserItem);
+
+server.get('/api/users/:id', api.getUser);
+
+server.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
 
 
 
@@ -117,14 +128,3 @@ const api = new API();
 //         description: "Everyone has one"
 //     }
 // ];
-
-
-server.get('/api/app', api.getApp);
-
-server.get('/api/categories/:id', api.getCategory);
-
-server.get('/api/items/:id', api.getItem);
-
-server.get('/api/users/:id', api.getUser);
-
-server.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));

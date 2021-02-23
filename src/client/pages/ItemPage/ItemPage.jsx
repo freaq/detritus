@@ -31,11 +31,26 @@ const ItemPage = (props) => {
     });
 
 
-    const buttonOnClick = (event) => {
+    const completedButtonOnClick = (event) => {
 
         const item = props.item;
-        item.completed = !item.completed;
-        props.dispatch(setItem(item));
+        item.completed = !item.completed;    
+        
+        if (props.user.id) {
+            item.userId = props.user.id;
+        }
+
+        fetch('/api/items/' + item.id, {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(item)
+        })
+        .then(response => response.json())
+        .then(updatedItem => {
+            props.dispatch(setItem(updatedItem));
+        })
     };
 
     const item = props.item;
@@ -55,7 +70,7 @@ const ItemPage = (props) => {
                             <MuiButton variant="contained" color="primary"
                                 onClick={
                                     (event) => {
-                                        buttonOnClick(event)
+                                        completedButtonOnClick(event)
                                     }}>
                                 {props.item && props.item.completed ? 'Completed' : 'Not Completed'}
                             </MuiButton>

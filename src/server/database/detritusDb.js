@@ -8,7 +8,7 @@ module.exports = class DetritusDB {
             query: 'SELECT * FROM categories'
         };
 
-        const results = await database.fetchAll('categories', querySpec);
+        const results = await database.getItems('categories', querySpec);
         return results;
     };
 
@@ -16,8 +16,8 @@ module.exports = class DetritusDB {
         const querySpec = {
             query: "SELECT * FROM categories c WHERE c.id = '" + categoryId + "' "
         };
-    
-        const results = await database.fetchAll('categories', querySpec);
+
+        const results = await database.getItems('categories', querySpec);
         return results;
     };
 
@@ -25,17 +25,32 @@ module.exports = class DetritusDB {
         const querySpec = {
             query: "SELECT * FROM items"
         };
-    
-        const results = await database.fetchAll('items', querySpec);
+
+        const results = await database.getItems('items', querySpec);
         return results;
-    };    
+    };
+
+    async getItem(itemId) {
+        const querySpec = {
+            query: "SELECT * FROM items i WHERE i.id = '" + itemId + "' "
+        };
+
+        const results = await database.getItems('items', querySpec);
+        return results;
+    };
 
     async getUser(auth0UserId) {
         const querySpec = {
             query: "SELECT * FROM users u WHERE u.auth0UserId = '" + auth0UserId + "' "
         };
-    
-        const results = await database.fetchAll('users', querySpec);
+
+        const results = await database.getItems('users', querySpec);
+        return results;
+    };
+
+    async createOrUpdateUserItem(item) {
+
+        const results = await database.upsertItem('userItems', item);
         return results;
     };
 
